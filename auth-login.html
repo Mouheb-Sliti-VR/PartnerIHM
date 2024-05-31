@@ -114,7 +114,10 @@
           success: function(response) {
             // Handle successful login response
             console.log('Login Response:', response);
-            //alert('Login successful!');
+            
+            // Store the token in localStorage
+            localStorage.setItem('bearerToken', response.token);
+
             // Redirect the user to the homepage
             window.location.href = 'index.html';
           },
