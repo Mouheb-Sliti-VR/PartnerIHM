@@ -14,6 +14,16 @@
   <!-- Custom style CSS -->
   <link rel="stylesheet" href="assets/css/custom.css">
   <link rel='shortcut icon' type='image/x-icon' href='assets/img/favicon.ico' />
+  <style>
+    .was-validated .form-control:valid, 
+    .was-validated .form-control.is-valid, 
+    .form-control.is-valid, 
+    .was-validated .form-control:invalid, 
+    .was-validated .form-control.is-invalid, 
+    .form-control.is-invalid {
+      background-image: none !important;
+    }
+  </style>
 </head>
 
 <body>
@@ -28,12 +38,12 @@
                 <h4>Authentication</h4>
               </div>
               <div class="card-body">
-                <form id="loginForm" class="needs-validation" novalidate="">
+                <form id="loginForm" class="needs-validation" novalidate>
                   <div class="form-group">
                     <label for="email">Email</label>
-                    <input id="email" type="email" class="form-control" name="email" tabindex="1" required autofocus>
+                    <input id="email" type="email" class="form-control" name="email" tabindex="1" required autofocus autocomplete="email">
                     <div class="invalid-feedback">
-                      Please enter your email
+                      Please enter a valid email
                     </div>
                   </div>
                   <div class="form-group">
@@ -45,19 +55,13 @@
                         </a>
                       </div>
                     </div>
-                    <input id="password" type="password" class="form-control" name="password" tabindex="2" required>
+                    <input id="password" type="password" class="form-control" name="password" tabindex="2" required autocomplete="current-password">
                     <div class="invalid-feedback">
                       Please enter your password
                     </div>
                   </div>
                   <div class="form-group">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" name="remember" class="custom-control-input" tabindex="3" id="remember-me">
-                      <label class="custom-control-label" for="remember-me">Remember Me</label>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4" name="login">
+                    <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="3" name="login">
                       Sign In
                     </button>
                   </div>
@@ -74,6 +78,8 @@
       </div>
     </section>
   </div>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <!-- General JS Scripts -->
   <script src="assets/js/app.min.js"></script>
   <!-- Template JS File -->
@@ -81,28 +87,47 @@
   <!-- Custom JS File -->
   <script src="assets/js/custom.js"></script>
 
-  <!-- jQuery -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
     $(document).ready(function() {
       $('#loginForm').submit(function(e) {
         e.preventDefault(); // Prevent the default form submission
-        var formData = $(this).serialize(); // Serialize form data
+
+        // Check if form is valid
+        var form = this;
+        if (form.checkValidity() === false) {
+          e.stopPropagation();
+          form.classList.add('was-validated');
+          return;
+        }
+
+        // Create JSON object
+        var formData = {
+          email: $('#email').val(),
+          password: $('#password').val()
+        };
+
         $.ajax({
           type: 'POST',
           url: 'https://marketplace-fmjs.onrender.com/auth/login',
-          data: formData,
+          data: JSON.stringify(formData), // Convert data to JSON string
+          contentType: 'application/json', // Set content type to JSON
           success: function(response) {
             // Handle successful login response
-            console.log(response);
-            alert('Login successful!');
+            console.log('Login Response:', response);
+            //alert('Login successful!');
             // Redirect the user to the homepage
             window.location.href = 'index.html';
           },
           error: function(xhr, status, error) {
+            // Log AJAX error
+            console.error('AJAX Error:', error);
+
             // Handle login error
             var errorMessage = xhr.responseText ? xhr.responseText : 'Unknown error occurred.';
             $('#error-message').text(errorMessage).show(); // Display the error message
+
+            // Remove form validation states
+            form.classList.remove('was-validated');
           }
         });
       });

@@ -31,18 +31,19 @@
                 <form id="registrationForm">
                   <div class="form-group">
                     <label for="company_name">Company Name</label>
-                    <input id="company_name" type="text" class="form-control" name="companyName" autofocus>
+                    <input id="company_name" type="text" class="form-control" name="companyName" autofocus required>
                   </div>
                   <div class="form-group">
                     <label for="email">Email</label>
-                    <input id="email" type="email" class="form-control" name="email">
+                    <input id="email" type="email" class="form-control" name="email" required>
                     <div class="invalid-feedback">
+                      Please provide a valid email address.
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="password" class="d-block">Password</label>
                     <input id="password" type="password" class="form-control pwstrength" data-indicator="pwindicator"
-                      name="password">
+                      name="password" required>
                     <div id="pwindicator" class="pwindicator">
                       <div class="bar"></div>
                       <div class="label"></div>
@@ -54,6 +55,8 @@
                     </button>
                   </div>
                 </form>
+                <!-- Success and error messages -->
+                <div id="message" class="alert" style="display: none;"></div>
               </div>
               <div class="mb-4 text-muted text-center">
                 Already registered? <a href="auth-login.html"> Sign In</a>
@@ -65,8 +68,9 @@
     </section>
   </div>
   <!-- General JS Scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="assets/js/app.min.js"></script>
-  <!-- JS Libraies -->
+  <!-- JS Libraries -->
   <script src="assets/bundles/jquery-pwstrength/jquery.pwstrength.min.js"></script>
   <script src="assets/bundles/jquery-selectric/jquery.selectric.min.js"></script>
   <!-- Template JS File -->
@@ -77,22 +81,33 @@
     $(document).ready(function() {
       $('#registrationForm').submit(function(e) {
         e.preventDefault(); // Prevent the default form submission
-        var formData = $(this).serialize(); // Serialize form data
+
+        // Create JSON object
+        var formData = {
+          email: $('#email').val(),
+          companyName: $('#company_name').val(),
+          password: $('#password').val()
+        };
+
         $.ajax({
           type: 'POST',
           url: 'https://marketplace-fmjs.onrender.com/auth/register',
-          data: formData,
+          data: JSON.stringify(formData), // Convert data to JSON string
+          contentType: 'application/json', // Set content type to JSON
           success: function(response) {
             // Handle successful registration response
             console.log(response);
-            alert('Registration successful!');
-            // Redirect the user to the login page
-            window.location.href = 'auth-login.html'; // Redirect to login page
+            $('#message').removeClass('alert-danger').addClass('alert-success').text('Registration successful!').show();
+            // Redirect the user to the login page after a short delay
+            setTimeout(function() {
+              window.location.href = 'auth-login.html'; // Redirect to login page
+            }, 2000);
           },
           error: function(xhr, status, error) {
             // Handle registration error
             console.error(xhr.responseText);
-            alert('Registration failed. Please try again.');
+            var errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : 'Registration failed. Please try again.';
+            $('#message').removeClass('alert-success').addClass('alert-danger').text(errorMessage).show();
           }
         });
       });
