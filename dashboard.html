@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+  <title>Partner Dashboard</title>
+  <!-- General CSS Files -->
+  <link rel="stylesheet" href="assets/css/app.min.css">
+  <link rel="stylesheet" href="assets/bundles/jqvmap/dist/jqvmap.min.css">
+  <link rel="stylesheet" href="assets/bundles/weather-icon/css/weather-icons.min.css">
+  <link rel="stylesheet" href="assets/bundles/weather-icon/css/weather-icons-wind.min.css">
+  <link rel="stylesheet" href="assets/bundles/summernote/summernote-bs4.css">
+  <!-- Template CSS -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <!-- Custom style CSS -->
+  <link rel="stylesheet" href="assets/css/custom.css">
+  <link rel='shortcut icon' type='image/x-icon' href='assets/img/favicon.ico' />
+  <!-- General CSS Files -->
+  <link rel="stylesheet" href="assets/bundles/datatables/datatables.min.css">
+  <link rel="stylesheet" href="assets/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
+</head>
+
+<body>
+  <div class="loader"></div>
+  <div id="app">
+    <div class="main-wrapper main-wrapper-1">
+      <div class="navbar-bg"></div>
+      <nav class="navbar navbar-expand-lg main-navbar">
+        <form class="form-inline mr-auto">
+          <ul class="navbar-nav mr-3">
+            <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg collapse-btn"><i
+                  class="fas fa-arrow-left"></i></a></li>
+            <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link nav-link-lg"><i
+                  class="far fa-list-alt"></i></a>
+              <div class="dropdown-menu app-dropdown">
+                <div class="dropdown-header">Applications</div>
+                <div class="dropdown-list-content dropdown-list-message">
+                </div>
+              </div>
+            </li>
+          </ul>
+        </form>
+        <ul class="navbar-nav navbar-right">
+          <li><a href="#" class="nav-link nav-link-lg fullscreen-btn">
+              <i class="fas fa-expand"></i>
+            </a>
+          </li>
+          <li class="dropdown"><a href="#" data-toggle="dropdown"
+              class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+              <img alt="image" src="assets/img/user.png" class="user-img-radious-style">
+              <span class="d-sm-none d-lg-inline-block"></span></a>
+            <div class="dropdown-menu dropdown-menu-right">
+              <div class="dropdown-title">Hello</div>
+              <div class="dropdown-divider"></div>
+              <a href="index.html" class="dropdown-item has-icon text-danger">
+                <i class="fas fa-sign-out-alt"></i> Logout
+              </a>
+            </div>
+          </li>
+        </ul>
+      </nav>
+      <div class="main-sidebar sidebar-style-2">
+        <aside id="sidebar-wrapper">
+          <div class="sidebar-brand">
+            <a href="index.html"><img alt="image" src="assets/img/logo.png" class="header-logo">Partner</a>
+          </div>
+          <div class="sidebar-user">
+            <div class="sidebar-user-picture">
+              <img alt="image" src="assets/img/user.png">
+            </div>
+            <div class="sidebar-user-details">
+              <div class="user-name">Orange eXtended Store</div>
+              <div class="user-role">
+                Partner
+              </div>
+            </div>
+          </div>
+          <ul class="sidebar-menu">
+            <li class="menu-header">Welcome</li>
+            <li class="dropdown active">
+              <a href="#" class="nav-link has-dropdown"><i class="fas fa-dumpster"></i><span>Photos / Videos</span></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown">
+                  <ul class="dropdown-menu">
+                    <li><a class="nav-link" href="#">Add Video / Photo</a></li>
+                    <li class="active"><a class="nav-link" href="#">Liste des Q/R</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </aside>
+      </div>
+      <!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+          <div class="section-header">
+            <h1>Welcome partner</h1>
+          </div>
+          
+          <div class="section-body">
+            <h2 class="section-title">Welcome to Orange eXtended Store partner dashboard</h2>
+            <p class="section-lead">You can choose from one of the offers below:</p>
+            <div class="row">
+              <div class="col-12 col-md-6 col-lg-6">
+                <div class="card">
+                  <div class="card-header">
+                    <h4>Photos Advertising Package - Showcase your brand via images</h4>
+                  </div>
+                  <div class="card-body">
+                    <p>Possibility to upload only 2 Photos</p>
+                    <button class="btn btn-primary" onclick="chooseOption(1)">OK</button>
+                    <input type="hidden" id="option" name="option" value="">
+
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-lg-6">
+                <div class="card">
+                  <div class="card-header">
+                    <h4>Dynamic Advertising Package - Engage with photos and videos</h4>
+                  </div>
+                  <div class="card-body">
+                    <p>Possibility to upload 2 Photos + 1 Video</p>
+                    <button class="btn btn-primary" onclick="chooseOption(2)">OK</button>
+                    <input type="hidden" id="option" name="option" value="">
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <div class="modal-body" id="uploadForm" style="display: none;">
+          <div class="d-flex justify-content-center align-items-center" style="height: 100%;">
+            <div class="form-group">
+              <h6 for="logoFile">Logo:</h6>
+              <input type="file" id="logoFile" class="form-control-file" accept="image/*"
+                onchange="uploadFile('logo', this)">
+              <button class="btn btn-primary mt-2" onclick="uploadFile('logo', document.getElementById('logoFile'))">
+                Upload Logo
+              </button>
+            </div>
+            <hr>
+            <div class="form-group">
+              <h6 for="image1File">Image 1:</h6>
+              <input type="file" id="image1File" class="form-control-file" accept="image/*"
+                onchange="uploadFile('image1', this)">
+              <button class="btn btn-primary mt-2"
+                onclick="uploadFile('image1', document.getElementById('image1File'))">
+                Upload Image 1
+              </button>
+            </div>
+            <hr>
+            <div class="form-group">
+              <h6 for="image2File">Image 2:</h6>
+              <input type="file" id="image2File" class="form-control-file" accept="image/*"
+                onchange="uploadFile('image2', this)">
+              <button class="btn btn-primary mt-2"
+                onclick="uploadFile('image2', document.getElementById('image2File'))">
+                Upload Image 2
+              </button>
+            </div>
+            <hr>
+            <div class="form-group" id="videoUploadField">
+              <h6 for="videoFile">Advertising Video:</h6>
+              <input type="file" id="videoFile" class="form-control-file" accept="video/*"
+                onchange="uploadFile('video', this)">
+              <button class="btn btn-primary mt-2" onclick="uploadFile('video', document.getElementById('videoFile'))">
+                Upload Video
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="settingSidebar">
+          <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
+          </a>
+          <div class="settingSidebar-body ps-container ps-theme-default">
+            <div class=" fade show active">
+              <div class="setting-panel-header">Configuration Theme</div>
+              <div class="p-15 border-bottom">
+                <h6 class="font-medium m-b-10">Choose Layout</h6>
+                <div class="selectgroup layout-color w-50">
+                  <label class="selectgroup-item">
+                    <input type="radio" name="value" value="1" class="selectgroup-input" checked>
+                    <span class="selectgroup-button">Light</span>
+                  </label>
+                  <label class="selectgroup-item">
+                    <input type="radio" name="value" value="2" class="selectgroup-input">
+                    <span class="selectgroup-button">Dark</span>
+                  </label>
+                </div>
+              </div>
+              <div class="p-15 border-bottom">
+                <h6 class="font-medium m-b-10">Sidebar Color</h6>
+                <div class="selectgroup selectgroup-pills sidebar-color">
+                  <label class="selectgroup-item">
+                    <input type="radio" name="icon-input" value="1" class="selectgroup-input" checked>
+                    <span class="selectgroup-button selectgroup-button-icon" data-toggle="tooltip"
+                      data-original-title="Light Sidebar"><i class="fas fa-sun"></i></span>
+                  </label>
+                  <label class="selectgroup-item">
+                    <input type="radio" name="icon-input" value="2" class="selectgroup-input">
+                    <span class="selectgroup-button selectgroup-button-icon" data-toggle="tooltip"
+                      data-original-title="Dark Sidebar"><i class="fas fa-moon"></i></span>
+                  </label>
+                </div>
+              </div>
+              <div class="p-15 border-bottom">
+                <h6 class="font-medium m-b-10">Theme Color</h6>
+                <div class="theme-setting-options">
+                  <ul class="choose-theme list-unstyled mb-0">
+                    <li title="default" class="active">
+                      <div class="default"></div>
+                    </li>
+                    <li title="orange">
+                      <div class="orange"></div>
+                    </li>
+                    <li title="cyan">
+                      <div class="cyan"></div>
+                    </li>
+                    <li title="white">
+                      <div class="white"></div>
+                    </li>
+                    <li title="black">
+                      <div class="black"></div>
+                    </li>
+                    <li title="green">
+                      <div class="green"></div>
+                    </li>
+                    <li title="red">
+                      <div class="red"></div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="mt-4 mb-4 p-3 align-center rt-sidebar-last-ele">
+                <a href="#" class="btn btn-icon icon-left btn-primary btn-restore-theme">
+                  <i class="fas fa-undo"></i> Restore Theme
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer class="main-footer">
+        <div class="footer-left">
+          Copyright &copy; 2024 <div class="bullet"></div> Designed By <a
+            href="https://plazza.orange.com/groups/olps-tunisia">Orange</a>
+        </div>
+        <div class="footer-right">
+        </div>
+      </footer>
+    </div>
+  </div>
+  <!-- General JS Scripts -->
+  <script src="assets/js/app.min.js"></script>
+  <!-- JS Libraries -->
+  <script src="assets/bundles/chartjs/chart.min.js"></script>
+  <script src="assets/bundles/apexcharts/apexcharts.min.js"></script>
+  <script src="assets/bundles/simple-weather/jquery.simpleWeather.min.js"></script>
+  <script src="assets/bundles/jquery.sparkline.min.js"></script>
+  <script src="assets/bundles/jqvmap/dist/jquery.vmap.min.js"></script>
+  <script src="assets/bundles/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+  <script src="assets/bundles/summernote/summernote-bs4.js"></script>
+  <script src="assets/bundles/chocolat/dist/js/jquery.chocolat.min.js"></script>
+  <!-- Page Specific JS File -->
+  <script src="assets/js/page/index2.js"></script>
+  <!-- Template JS File -->
+  <script src="assets/js/scripts.js"></script>
+  <!-- Custom JS File -->
+  <script src="assets/js/custom.js"></script>
+  <!-- JS Libraries -->
+  <script src="assets/bundles/datatables/datatables.min.js"></script>
+  <script src="assets/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
+  <script src="assets/bundles/jquery-ui/jquery-ui.min.js"></script>
+  <!-- Page Specific JS File -->
+  <script src="assets/js/page/datatables.js"></script>
+  <script>
+    function chooseOption(option) {
+      // Show the media upload modal
+      $('#mediaUploadModal').modal('show');
+
+      // Show the upload form
+      $('#uploadForm').show();
+
+      // Hide or show the video upload field based on the option chosen
+      if (option === 1) {
+        $('#videoUploadField').hide(); // Hide the video upload field
+      } else {
+        $('#videoUploadField').show(); // Show the video upload field
+      }
+    }
+  </script>
+  <script>
+    function uploadFile(fieldName, fileInput) {
+      // Get the selected file
+      const file = fileInput.files[0];
+
+      // Create FormData and append the file and field name
+      const formData = new FormData();
+      formData.append('fieldName', fieldName);
+      formData.append('media', file);
+
+      // Get the bearer token from localStorage
+      const bearerToken = localStorage.getItem('bearerToken');
+
+      // Check if the token exists
+      if (bearerToken) {
+        // Add the bearer token to the Authorization header
+        $.ajaxSetup({
+          headers: {
+            'Authorization': 'Bearer ' + bearerToken
+          }
+        });
+      }
+
+      // Send the AJAX request
+      const settings = {
+        async: true,
+        crossDomain: true,
+        url: 'https://marketplace-fmjs.onrender.com/media/uploadMedia',
+        method: 'POST',
+        processData: false,
+        contentType: false,
+        data: formData
+      };
+
+      $.ajax(settings)
+        .done(function (response) {
+          console.log(response);
+          // Show upload success alert
+          showAlert("Upload Media Done with Success !");
+        })
+        .fail(function (xhr, status, error) {
+          console.error(xhr.responseText);
+          // Show upload error alert
+          showAlert('Upload Media Failed !');
+        });
+    }
+
+    function showAlert(message) {
+      // Show a simple popup alert
+      alert(message);
+
+      // Automatically close the alert after 5 seconds
+      setTimeout(function () {
+        // Close the alert
+        closeAlert();
+      }, 2500);
+    }
+
+    function closeAlert() {
+      alert.closeAlert();
+      // No need to do anything as browser alerts automatically close
+    }
+
+  </script>
+
